@@ -11,7 +11,7 @@ var postureScheduler;
 var running = true;
 var playSound = false;
 
-var defaultSound = new Audio('water.mp3');
+var defaultSound = new Audio('sound.mp3');
 var waterSound = defaultSound;
 var blinkSound = defaultSound;
 var stretchSound = defaultSound;
@@ -29,7 +29,6 @@ blinkNotification = {
     title: "Blink your eyes",
     message: "Blink your eyes 10 times, then focus in the distance for a couple of seconds.",
     iconUrl: 'eye.png'
-    //imageUrl: 'giphy.gif'
 }
 
 stretchNotification = {
