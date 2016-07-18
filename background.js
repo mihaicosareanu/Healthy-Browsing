@@ -1,10 +1,12 @@
 var waterInterval = 1000 * 60 * 45;
 var blinkInterval = 1000 * 60 * 20;
 var stretchInterval = 1000 * 60 * 90;
+var postureInterval = 1000 * 60 * 20;
 
 var waterScheduler;
 var blinkScheduler;
 var stretchScheduler;
+var postureScheduler;
 
 var running = true;
 
@@ -29,6 +31,13 @@ stretchNotification = {
     iconUrl: 'stretch.png'
 }
 
+postureNotification = {
+    type: "basic",
+    title: "Are you sitting correctly?",
+    message: "Push your hips as far back as you can. Keep your shoulders back and your back straight.",
+    iconUrl: 'posture.png'
+}
+
 refreshScheduler = function() {
     chrome.storage.sync.get('healthyBrowsingSettings', function (prefs) {
         prefs = prefs.healthyBrowsingSettings;
@@ -38,6 +47,7 @@ refreshScheduler = function() {
             blinkInterval = prefs.blinkInterval * multiplier;
             stretchInterval = prefs.stretchInterval * multiplier;
             waterInterval = prefs.waterInterval * multiplier;
+            postureInterval = prefs.postureInterval * multiplier;
             running = prefs.running;
         }
         notificationScheduler();
@@ -65,6 +75,13 @@ notificationScheduler = function() {
             chrome.notifications.create('stretch', stretchNotification);
         }
     }, stretchInterval);
+
+    clearInterval(postureInterval);
+    postureScheduler = setInterval(function() {
+        if (running) {
+            chrome.notifications.create('posture', postureNotification);
+        }
+    }, postureInterval);
 };
 
 receiveMessage = function(message, sender, sendResponse) {

@@ -1,6 +1,7 @@
 var defaultBlinkValue = 20;
 var defaultWaterValue = 45;
 var defaultStretchValue = 90;
+var defaultPostureValue = 20;
 
 var running = true;
 
@@ -9,6 +10,7 @@ var getUserPrefs = function() {
     prefs.blinkInterval = $("#blink_slider").slider("value");
     prefs.waterInterval = $("#water_slider").slider("value");
     prefs.stretchInterval = $("#stretch_slider").slider("value");
+	prefs.postureInterval = $("#posture_slider").slider("value");
 	prefs.running = running;
     return prefs;
 }
@@ -26,22 +28,26 @@ $(document).ready(function() {
 		var blinkInterval;
 		var stretchInterval;
 		var waterInterval;
+		var postureInterval;
 
 		if (prefs == null || prefs.blinkInterval == null) {
 			blinkInterval = defaultBlinkValue;
 			stretchInterval = defaultStretchValue;
 			waterInterval = defaultWaterValue;
+			postureInterval = defaultPostureValue;
 			running = true;
 		} else {
 			blinkInterval = prefs.blinkInterval;
 			stretchInterval = prefs.stretchInterval;
 			waterInterval = prefs.waterInterval;
+			postureInterval = prefs.postureInterval;
 			running = prefs.running;
 		}
 
 		$("#blink_value").html(blinkInterval + ' minutes');
 		$("#water_value").html(waterInterval + ' minutes');
 		$("#stretch_value").html(stretchInterval + ' minutes');
+		$("#posture_value").html(postureInterval + ' minutes');
 
 		var sliderOptions = {
 			step: 5,
@@ -76,6 +82,15 @@ $(document).ready(function() {
 		}
 
 		$("#stretch_slider").slider(stretchSliderOptions);
+
+		var postureSliderOptions = sliderOptions;
+		postureSliderOptions.value = postureInterval;
+		postureSliderOptions.change = storeUserPrefs;
+		postureSliderOptions.slide = function (event, ui) {
+			$("#posture_value").html(ui.value + ' minutes');
+		}
+
+		$("#posture_slider").slider(postureSliderOptions);
 
 		if (running) {
 			$('.toggle-button').toggleClass('toggle-button-selected');
