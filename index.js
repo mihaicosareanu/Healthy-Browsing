@@ -4,6 +4,7 @@ var defaultStretchValue = 90;
 var defaultPostureValue = 20;
 
 var running = true;
+var playSound = false;
 
 var getUserPrefs = function() {
 	var prefs = {};
@@ -12,6 +13,7 @@ var getUserPrefs = function() {
     prefs.stretchInterval = $("#stretch_slider").slider("value");
 	prefs.postureInterval = $("#posture_slider").slider("value");
 	prefs.running = running;
+	prefs.playSound = playSound;
     return prefs;
 }
 
@@ -93,17 +95,32 @@ $(document).ready(function() {
 		$("#posture_slider").slider(postureSliderOptions);
 
 		if (running) {
-			$('.toggle-button').toggleClass('toggle-button-selected');
+			$('#toggle-running').toggleClass('toggle-button-selected');
+		}
+
+		if (playSound) {
+			$('#toggle-sound').toggleClass('toggle-button-selected');
 		}
 	});
 
 });
 
-$(document).on('click', '.toggle-button', function() {
+$(document).on('click', '#toggle-running', function() {
 	if (running)
 		running = false;
 	else
 		running = true;
+
+	storeUserPrefs();
+
+	$(this).toggleClass('toggle-button-selected');
+});
+
+$(document).on('click', '#toggle-sound', function() {
+	if (playSound)
+		playSound = false;
+	else
+		playSound = true;
 
 	storeUserPrefs();
 

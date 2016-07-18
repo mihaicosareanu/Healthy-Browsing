@@ -9,6 +9,13 @@ var stretchScheduler;
 var postureScheduler;
 
 var running = true;
+var playSound = false;
+
+var defaultSound = new Audio('water.mp3');
+var waterSound = defaultSound;
+var blinkSound = defaultSound;
+var stretchSound = defaultSound;
+var postureSound = defaultSound;
 
 waterNotification = {
     type: "basic",
@@ -22,6 +29,7 @@ blinkNotification = {
     title: "Blink your eyes",
     message: "Blink your eyes 10 times, then focus in the distance for a couple of seconds.",
     iconUrl: 'eye.png'
+    //imageUrl: 'giphy.gif'
 }
 
 stretchNotification = {
@@ -43,12 +51,13 @@ refreshScheduler = function() {
         prefs = prefs.healthyBrowsingSettings;
 
         if (prefs != null) {
-            var multiplier = 60 * 1000;
+            var multiplier = 1000;
             blinkInterval = prefs.blinkInterval * multiplier;
             stretchInterval = prefs.stretchInterval * multiplier;
             waterInterval = prefs.waterInterval * multiplier;
             postureInterval = prefs.postureInterval * multiplier;
             running = prefs.running;
+            playSound = prefs.playSound;
         }
         notificationScheduler();
     });
@@ -59,6 +68,9 @@ notificationScheduler = function() {
     waterScheduler = setInterval(function() {
         if (running) {
             chrome.notifications.create('water', waterNotification);
+            if (playSound) {
+                waterSound.play();
+            }
         }
     }, waterInterval);
 
@@ -66,6 +78,9 @@ notificationScheduler = function() {
     blinkScheduler = setInterval(function() {
         if (running) {
             chrome.notifications.create('blink', blinkNotification);
+            if (playSound) {
+                blinkSound.play();
+            }
         }
     }, blinkInterval);
 
@@ -73,13 +88,19 @@ notificationScheduler = function() {
     stretchScheduler = setInterval(function() {
         if (running) {
             chrome.notifications.create('stretch', stretchNotification);
+            if (playSound) {
+                stretchSound.play();
+            }
         }
     }, stretchInterval);
 
-    clearInterval(postureInterval);
+    clearInterval(postureScheduler);
     postureScheduler = setInterval(function() {
         if (running) {
             chrome.notifications.create('posture', postureNotification);
+            if (playSound) {
+                postureSound.play();
+            }
         }
     }, postureInterval);
 };
