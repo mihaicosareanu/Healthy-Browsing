@@ -11,7 +11,7 @@ var running = true;
 waterNotification = {
     type: "basic",
     title: "Take a sip",
-    message: "It's time to drink some water",
+    message: "It's time to drink some water.",
     iconUrl: 'water.png'
 }
 
@@ -25,7 +25,7 @@ blinkNotification = {
 stretchNotification = {
     type: "basic",
     title: "Time to stretch",
-    message: "Get up and stretch, go to the kitchen or to the bathroom or to the balcony",
+    message: "Get up and stretch, go to the kitchen or to the bathroom or to the balcony.",
     iconUrl: 'stretch.png'
 }
 
