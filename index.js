@@ -1,26 +1,42 @@
-var defaultBlinkValue = 20;
-var defaultWaterValue = 45;
-var defaultStretchValue = 90;
-var defaultPostureValue = 20;
+/*
+	Default values
+ */
+var defaultBlinkInterval = 20;
+var defaultWaterInterval = 45;
+var defaultStretchInterval = 90;
+var defaultPostureInterval = 20;
+var defaultRunning = true;
+var defaultPlaySound = false;
 
+/*
+	Slider ids
+ */
 var blinkSliderId = "#blink_slider";
 var waterSliderId = "#water_slider";
 var stretchSliderId = "#stretch_slider";
 var postureSliderId = "#posture_slider";
 
-var running = true;
-var playSound = false;
+/*
+	Toggle ids
+ */
+var runningToggleButton = "#toggle-running";
+var playSoundToggleButton = "#toggle-sound";
+var toggleButtonSelected = "toggle-button-selected";
+
+var running = defaultRunning;
+var playSound = defaultPlaySound;
 
 var resetDefaultSettings = function() {
-	$(blinkSliderId).slider("value", defaultBlinkValue);
-	$(waterSliderId).slider("value", defaultWaterValue);
-	$(stretchSliderId).slider("value", defaultStretchValue);
-	$(postureSliderId).slider("value", defaultPostureValue);
+	$(blinkSliderId).slider("value", defaultBlinkInterval);
+	$(waterSliderId).slider("value", defaultWaterInterval);
+	$(stretchSliderId).slider("value", defaultStretchInterval);
+	$(postureSliderId).slider("value", defaultPostureInterval);
 
-	updateBlinkValue(defaultBlinkValue);
-	updateWaterValue(defaultWaterValue);
-	updateStretchValue(defaultStretchValue);
-	updatePostureValue(defaultPostureValue);
+	updateBlinkText(defaultBlinkInterval);
+	updateWaterText(defaultWaterInterval);
+	updateStretchText(defaultStretchInterval);
+	updatePostureText(defaultPostureInterval);
+
 	storeUserPrefs();
 }
 
@@ -41,10 +57,10 @@ var storeUserPrefs = function() {
 	});
 }
 
-var updateBlinkValue = function(value) { $("#blink_value").html(value + ' minutes');}
-var updateWaterValue = function(value) { $("#water_value").html(value + ' minutes');}
-var updateStretchValue = function(value) { $("#stretch_value").html(value + ' minutes');}
-var updatePostureValue = function(value) { $("#posture_value").html(value + ' minutes');}
+var updateBlinkText = function(value) { $("#blink_value").html(value + ' minutes');}
+var updateWaterText = function(value) { $("#water_value").html(value + ' minutes');}
+var updateStretchText = function(value) { $("#stretch_value").html(value + ' minutes');}
+var updatePostureText = function(value) { $("#posture_value").html(value + ' minutes');}
 
 
 $(document).ready(function() {
@@ -56,25 +72,34 @@ $(document).ready(function() {
 		var waterInterval;
 		var postureInterval;
 
-		if (prefs == null || prefs.blinkInterval == null) {
-			blinkInterval = defaultBlinkValue;
-			stretchInterval = defaultStretchValue;
-			waterInterval = defaultWaterValue;
-			postureInterval = defaultPostureValue;
-			running = true;
+		if (prefs == null) {
+			blinkInterval = defaultBlinkInterval;
+			stretchInterval = defaultStretchInterval;
+			waterInterval = defaultWaterInterval;
+			postureInterval = defaultPostureInterval;
+			running = defaultRunning;
+			playSound = defaultPlaySound;
 		} else {
-			blinkInterval = prefs.blinkInterval;
-			stretchInterval = prefs.stretchInterval;
-			waterInterval = prefs.waterInterval;
-			postureInterval = prefs.postureInterval;
-			running = prefs.running;
+			blinkInterval = prefs.blinkInterval || defaultBlinkInterval;
+			stretchInterval = prefs.stretchInterval || defaultStretchInterval;
+			waterInterval = prefs.waterInterval || defaultWaterInterval;
+			postureInterval = prefs.postureInterval || defaultPostureInterval;
+
+			if (prefs.running != null)
+				running = prefs.running;
+			else
+				runnign = defaultRunning;
+
+			if (prefs.playSound != null)
+				playSound = prefs.playSound;
+			else
+				playSound = defaultPlaySound;
 		}
 
-		updateBlinkValue(blinkInterval);
-		updateWaterValue(waterInterval);
-		updateStretchValue(stretchInterval);
-		updatePostureValue(postureInterval);
-
+		updateBlinkText(blinkInterval);
+		updateWaterText(waterInterval);
+		updateStretchText(stretchInterval);
+		updatePostureText(postureInterval);
 
 		var sliderOptions = {
 			step: 5,
@@ -87,15 +112,16 @@ $(document).ready(function() {
 		blinkSliderOptions.value = blinkInterval;
 		blinkSliderOptions.change = storeUserPrefs;
 		blinkSliderOptions.slide = function (event, ui) {
-			updateBlinkValue(ui.value);
+			updateBlinkText(ui.value);
 		}
 		$(blinkSliderId).slider(blinkSliderOptions);
+
 
 		var waterSliderOptions = sliderOptions;
 		waterSliderOptions.value = waterInterval;
 		waterSliderOptions.change = storeUserPrefs;
 		waterSliderOptions.slide = function (event, ui) {
-			updateWaterValue(ui.value);
+			updateWaterText(ui.value);
 		}
 		$(waterSliderId).slider(waterSliderOptions);
 
@@ -104,7 +130,7 @@ $(document).ready(function() {
 		stretchSliderOptions.value = stretchInterval;
 		stretchSliderOptions.change = storeUserPrefs;
 		stretchSliderOptions.slide = function (event, ui) {
-			updateStretchValue(ui.value);
+			updateStretchText(ui.value);
 		}
 		$(stretchSliderId).slider(stretchSliderOptions);
 
@@ -113,24 +139,22 @@ $(document).ready(function() {
 		postureSliderOptions.value = postureInterval;
 		postureSliderOptions.change = storeUserPrefs;
 		postureSliderOptions.slide = function (event, ui) {
-			updatePostureValue(ui.value);
+			updatePostureText(ui.value);
 		}
 		$(postureSliderId).slider(postureSliderOptions);
 
-
-
 		if (running) {
-			$('#toggle-running').toggleClass('toggle-button-selected');
+			$(runningToggleButton).toggleClass(toggleButtonSelected);
 		}
 
 		if (playSound) {
-			$('#toggle-sound').toggleClass('toggle-button-selected');
+			$(playSoundToggleButton).toggleClass(toggleButtonSelected);
 		}
 	});
 
 });
 
-$(document).on('click', '#toggle-running', function() {
+$(document).on('click', runningToggleButton, function() {
 	if (running)
 		running = false;
 	else
@@ -138,10 +162,10 @@ $(document).on('click', '#toggle-running', function() {
 
 	storeUserPrefs();
 
-	$(this).toggleClass('toggle-button-selected');
+	$(this).toggleClass(toggleButtonSelected);
 });
 
-$(document).on('click', '#toggle-sound', function() {
+$(document).on('click', playSoundToggleButton, function() {
 	if (playSound)
 		playSound = false;
 	else
@@ -149,7 +173,7 @@ $(document).on('click', '#toggle-sound', function() {
 
 	storeUserPrefs();
 
-	$(this).toggleClass('toggle-button-selected');
+	$(this).toggleClass(toggleButtonSelected);
 });
 
 $(document).on('click', '#reset-settings', function() {

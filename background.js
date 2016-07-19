@@ -1,15 +1,22 @@
-var waterInterval = 1000 * 60 * 45;
-var blinkInterval = 1000 * 60 * 20;
-var stretchInterval = 1000 * 60 * 90;
-var postureInterval = 1000 * 60 * 20;
+var defaultBlinkValue = 20;
+var defaultWaterValue = 45;
+var defaultStretchValue = 90;
+var defaultPostureValue = 20;
+var defaultRunning = true;
+var defaultPlaySound = false;
+
+var waterInterval;
+var blinkInterval;
+var stretchInterval;
+var postureInterval;
 
 var waterScheduler;
 var blinkScheduler;
 var stretchScheduler;
 var postureScheduler;
 
-var running = true;
-var playSound = false;
+var running = defaultRunning;
+var playSound = defaultPlaySound;
 
 var defaultSound = new Audio('sound.mp3');
 var waterSound = defaultSound;
@@ -51,12 +58,20 @@ refreshScheduler = function() {
 
         if (prefs != null) {
             var multiplier = 1000;
-            blinkInterval = prefs.blinkInterval * multiplier;
-            stretchInterval = prefs.stretchInterval * multiplier;
-            waterInterval = prefs.waterInterval * multiplier;
-            postureInterval = prefs.postureInterval * multiplier;
-            running = prefs.running;
-            playSound = prefs.playSound;
+            blinkInterval = prefs.blinkInterval * multiplier || defaultBlinkValue * multiplier;
+            stretchInterval = prefs.stretchInterval * multiplier || defaultStretchValue * multiplier;
+            waterInterval = prefs.waterInterval * multiplier || defaultWaterValue * multiplier;
+            postureInterval = prefs.postureInterval * multiplier || defaultPostureValue * multiplier;
+
+            if (prefs.running != null)
+                running = prefs.running;
+            else
+                runnign = defaultRunning;
+
+            if (prefs.playSound != null)
+                playSound = prefs.playSound;
+            else
+                playSound = defaultPlaySound;
         }
         notificationScheduler();
     });
