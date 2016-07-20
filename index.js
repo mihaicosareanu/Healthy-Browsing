@@ -38,7 +38,7 @@ var resetDefaultSettings = function() {
 	updatePostureText(defaultPostureInterval);
 
 	storeUserPrefs();
-}
+};
 
 var getUserPrefs = function() {
 	var prefs = {};
@@ -49,18 +49,18 @@ var getUserPrefs = function() {
 	prefs.running = running;
 	prefs.playSound = playSound;
     return prefs;
-}
+};
 
 var storeUserPrefs = function() {
 	chrome.storage.sync.set({healthyBrowsingSettings: getUserPrefs()}, function() {
 		chrome.extension.sendMessage({action: "optionsChanged"});
 	});
-}
+};
 
-var updateBlinkText = function(value) { $("#blink_value").html(value + ' minutes');}
-var updateWaterText = function(value) { $("#water_value").html(value + ' minutes');}
-var updateStretchText = function(value) { $("#stretch_value").html(value + ' minutes');}
-var updatePostureText = function(value) { $("#posture_value").html(value + ' minutes');}
+var updateBlinkText = function(value) { $("#blink_value").html(value + ' minutes');};
+var updateWaterText = function(value) { $("#water_value").html(value + ' minutes');};
+var updateStretchText = function(value) { $("#stretch_value").html(value + ' minutes');};
+var updatePostureText = function(value) { $("#posture_value").html(value + ' minutes');};
 
 
 $(document).ready(function() {
@@ -85,15 +85,19 @@ $(document).ready(function() {
 			waterInterval = prefs.waterInterval || defaultWaterInterval;
 			postureInterval = prefs.postureInterval || defaultPostureInterval;
 
-			if (prefs.running != null)
+			if (prefs.running != null) {
 				running = prefs.running;
-			else
-				runnign = defaultRunning;
+			}
+			else {
+				running = defaultRunning;
+			}
 
-			if (prefs.playSound != null)
+			if (prefs.playSound != null) {
 				playSound = prefs.playSound;
-			else
+			}
+			else {
 				playSound = defaultPlaySound;
+			}
 		}
 
 		updateBlinkText(blinkInterval);
@@ -113,7 +117,7 @@ $(document).ready(function() {
 		blinkSliderOptions.change = storeUserPrefs;
 		blinkSliderOptions.slide = function (event, ui) {
 			updateBlinkText(ui.value);
-		}
+		};
 		$(blinkSliderId).slider(blinkSliderOptions);
 
 
@@ -122,7 +126,7 @@ $(document).ready(function() {
 		waterSliderOptions.change = storeUserPrefs;
 		waterSliderOptions.slide = function (event, ui) {
 			updateWaterText(ui.value);
-		}
+		};
 		$(waterSliderId).slider(waterSliderOptions);
 
 
@@ -131,7 +135,7 @@ $(document).ready(function() {
 		stretchSliderOptions.change = storeUserPrefs;
 		stretchSliderOptions.slide = function (event, ui) {
 			updateStretchText(ui.value);
-		}
+		};
 		$(stretchSliderId).slider(stretchSliderOptions);
 
 
@@ -140,7 +144,7 @@ $(document).ready(function() {
 		postureSliderOptions.change = storeUserPrefs;
 		postureSliderOptions.slide = function (event, ui) {
 			updatePostureText(ui.value);
-		}
+		};
 		$(postureSliderId).slider(postureSliderOptions);
 
 		if (running) {
@@ -155,10 +159,12 @@ $(document).ready(function() {
 });
 
 $(document).on('click', runningToggleButton, function() {
-	if (running)
+	if (running) {
 		running = false;
-	else
+	}
+	else {
 		running = true;
+	}
 
 	storeUserPrefs();
 
@@ -166,10 +172,12 @@ $(document).on('click', runningToggleButton, function() {
 });
 
 $(document).on('click', playSoundToggleButton, function() {
-	if (playSound)
+	if (playSound) {
 		playSound = false;
-	else
+	}
+	else {
 		playSound = true;
+	}
 
 	storeUserPrefs();
 

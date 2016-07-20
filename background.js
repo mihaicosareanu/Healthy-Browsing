@@ -24,35 +24,35 @@ var blinkSound = defaultSound;
 var stretchSound = defaultSound;
 var postureSound = defaultSound;
 
-waterNotification = {
+var waterNotification = {
     type: "basic",
     title: "Take a sip",
     message: "It's time to drink some water.",
     iconUrl: 'water.png'
-}
+};
 
-blinkNotification = {
+var blinkNotification = {
     type: "basic",
     title: "Blink your eyes",
     message: "Blink your eyes 10 times, then focus in the distance for a couple of seconds.",
     iconUrl: 'eye.png'
-}
+};
 
-stretchNotification = {
+var stretchNotification = {
     type: "basic",
     title: "Time to stretch",
     message: "Get up and stretch, go to the kitchen or to the bathroom or to the balcony.",
     iconUrl: 'stretch.png'
-}
+};
 
-postureNotification = {
+var postureNotification = {
     type: "basic",
     title: "Are you sitting correctly?",
     message: "Push your hips as far back as you can. Keep your shoulders back and your back straight.",
     iconUrl: 'posture.png'
-}
+};
 
-refreshScheduler = function() {
+var refreshScheduler = function() {
     chrome.storage.sync.get('healthyBrowsingSettings', function (prefs) {
         prefs = prefs.healthyBrowsingSettings;
 
@@ -66,7 +66,7 @@ refreshScheduler = function() {
             if (prefs.running != null)
                 running = prefs.running;
             else
-                runnign = defaultRunning;
+                running = defaultRunning;
 
             if (prefs.playSound != null)
                 playSound = prefs.playSound;
@@ -75,9 +75,9 @@ refreshScheduler = function() {
         }
         notificationScheduler();
     });
-}
+};
 
-notificationScheduler = function() {
+var notificationScheduler = function() {
     clearInterval(waterScheduler);
     waterScheduler = setInterval(function() {
         if (running) {
@@ -119,11 +119,11 @@ notificationScheduler = function() {
     }, postureInterval);
 };
 
-receiveMessage = function(message, sender, sendResponse) {
-    if (message.action = "optionsChanged") {
+var receiveMessage = function(message, sender, sendResponse) {
+    if (message.action == "optionsChanged") {
         refreshScheduler();
     }
-}
+};
 
 refreshScheduler();
 
