@@ -57,7 +57,7 @@ var refreshScheduler = function() {
         prefs = prefs.healthyBrowsingSettings;
 
         if (prefs != null) {
-            var multiplier = 1000;
+            var multiplier = 60 * 1000;
             blinkInterval = prefs.blinkInterval * multiplier || defaultBlinkValue * multiplier;
             stretchInterval = prefs.stretchInterval * multiplier || defaultStretchValue * multiplier;
             waterInterval = prefs.waterInterval * multiplier || defaultWaterValue * multiplier;
