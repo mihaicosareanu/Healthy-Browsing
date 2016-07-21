@@ -16,19 +16,21 @@ h2.values {
 	margin-left: 5px;
 	width: auto;
 }
-.checkbox {
-	display: block;
-	width: 100px;
-	height: 100px;
-}
 
 .toggle-row h2 {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
+.toggle-row {
+	display:block;
+	float:right;
+}
+
 .form-section {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
+	padding-bottom: 5px;
+	overflow: hidden;
 }
 
 .toggle-button { background-color: white; margin: 5px 10px; border-radius: 20px; border: 2px solid #D0D0D0; height: 24px; cursor: pointer; width: 50px; position: relative; display: inline-block; user-select: none; -webkit-user-select: none; -ms-user-select: none; -moz-user-select: none; }
@@ -36,3 +38,26 @@ h2.values {
 .toggle-button-selected { background-color: #83B152; border: 2px solid #7DA652; }
 .toggle-button-selected button { left: 26px; top: 0; margin: 0; border: none; width: 24px; height: 24px; box-shadow: 0 0 4px rgba(0,0,0,0.1); }
 .toggle-label { padding-bottom: 5px;}
+
+.button {
+	background-color:#b3b3b3;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px;
+	display:block;
+	cursor:pointer;
+	color:white;
+	font-family:Lato;
+	font-size:15px;
+	font-weight: 600;
+	padding:6px 12px;
+	transition: all 0.3s ease 0s;
+}
+.button:hover {
+	background-color:#759E49;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
