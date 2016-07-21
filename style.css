@@ -1,23 +1,19 @@
 body {
 	min-width: 300px;
+	font-family: "Lato";
 }
 h1 {
-	font-family: "Open Sans";
+	font-weight: 600;
 }
 h2 {
-	font-family: "Open Sans";
 	display: inline-block;
 	vertical-align:middle;
+	font-weight: 600;
 }
 h2.values {
 	display: inline-block;
 	text-align: right;
 	margin-left: 5px;
-	font-size: 1.4em;
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
-	-khtml-border-radius: 0;
-	border-radius: 0;
 	width: auto;
 }
 .checkbox {
@@ -25,10 +21,11 @@ h2.values {
 	width: 100px;
 	height: 100px;
 }
-.options-row {
-	display: block;
-	clear: right;
-}
+
+/*.toggle-row h2 {
+	padding-top: 5px;
+	margin-bottom: 0px;
+}*/
 
 .toggle-button { background-color: white; margin: 5px 10px; border-radius: 20px; border: 2px solid #D0D0D0; height: 24px; cursor: pointer; width: 50px; position: relative; display: inline-block; user-select: none; -webkit-user-select: none; -ms-user-select: none; -moz-user-select: none; }
 .toggle-button button { cursor: pointer; outline: 0; display:block; position: absolute; left: 0; top: 0; border-radius: 100%; width: 30px; height: 30px; background-color: white; float: left; margin: -3px 0 0 -3px; border: 2px solid #D0D0D0; transition: left 0.3s; }
