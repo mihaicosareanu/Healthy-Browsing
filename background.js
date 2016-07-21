@@ -5,10 +5,12 @@ var defaultPostureValue = 20;
 var defaultRunning = true;
 var defaultPlaySound = false;
 
-var waterInterval;
-var blinkInterval;
-var stretchInterval;
-var postureInterval;
+var multiplier = 60 * 1000;
+
+var waterInterval = defaultWaterValue * multiplier;
+var blinkInterval = defaultBlinkValue * multiplier;
+var stretchInterval = defaultStretchValue * multiplier;
+var postureInterval = defaultPostureValue * multiplier;
 
 var waterScheduler;
 var blinkScheduler;
@@ -57,7 +59,6 @@ var refreshScheduler = function() {
         prefs = prefs.healthyBrowsingSettings;
 
         if (prefs != null) {
-            var multiplier = 60 * 1000;
             blinkInterval = prefs.blinkInterval * multiplier || defaultBlinkValue * multiplier;
             stretchInterval = prefs.stretchInterval * multiplier || defaultStretchValue * multiplier;
             waterInterval = prefs.waterInterval * multiplier || defaultWaterValue * multiplier;
