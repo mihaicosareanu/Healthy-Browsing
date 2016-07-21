@@ -22,10 +22,14 @@ h2.values {
 	height: 100px;
 }
 
-/*.toggle-row h2 {
-	padding-top: 5px;
-	margin-bottom: 0px;
-}*/
+.toggle-row h2 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.form-section {
+	margin-bottom: 20px;
+}
 
 .toggle-button { background-color: white; margin: 5px 10px; border-radius: 20px; border: 2px solid #D0D0D0; height: 24px; cursor: pointer; width: 50px; position: relative; display: inline-block; user-select: none; -webkit-user-select: none; -ms-user-select: none; -moz-user-select: none; }
 .toggle-button button { cursor: pointer; outline: 0; display:block; position: absolute; left: 0; top: 0; border-radius: 100%; width: 30px; height: 30px; background-color: white; float: left; margin: -3px 0 0 -3px; border: 2px solid #D0D0D0; transition: left 0.3s; }
