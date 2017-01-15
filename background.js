@@ -59,10 +59,26 @@ var refreshScheduler = function() {
         prefs = prefs.healthyBrowsingSettings;
 
         if (prefs != null) {
-            blinkInterval = prefs.blinkInterval * multiplier || defaultBlinkValue * multiplier;
-            stretchInterval = prefs.stretchInterval * multiplier || defaultStretchValue * multiplier;
-            waterInterval = prefs.waterInterval * multiplier || defaultWaterValue * multiplier;
-            postureInterval = prefs.postureInterval * multiplier || defaultPostureValue * multiplier;
+
+            if (prefs.blinkInterval != null)
+                blinkInterval = prefs.blinkInterval * multiplier;
+            else
+                blinkInterval = defaultBlinkValue * multiplier;
+
+            if (prefs.stretchInterval != null)
+                stretchInterval = prefs.stretchInterval * multiplier;
+            else
+                stretchInterval = defaultStretchValue * multiplier;
+
+            if (prefs.waterInterval != null)
+                waterInterval = prefs.waterInterval * multiplier;
+            else
+                waterInterval = defaultWaterValue * multiplier;
+
+            if (prefs.postureInterval != null)
+                postureInterval = prefs.postureInterval * multiplier;
+            else
+                postureInterval = defaultPostureValue * multiplier;
 
             if (prefs.running != null)
                 running = prefs.running;
@@ -80,44 +96,48 @@ var refreshScheduler = function() {
 
 var notificationScheduler = function() {
     clearInterval(waterScheduler);
-    waterScheduler = setInterval(function() {
-        if (running) {
+    clearInterval(blinkScheduler);
+    clearInterval(stretchScheduler);
+    clearInterval(postureScheduler);
+
+    if (!running)
+        return;
+
+    if (waterInterval) {
+        waterScheduler = setInterval(function () {
             chrome.notifications.create('water', waterNotification);
             if (playSound) {
                 waterSound.play();
             }
-        }
-    }, waterInterval);
+        }, waterInterval);
+    }
 
-    clearInterval(blinkScheduler);
-    blinkScheduler = setInterval(function() {
-        if (running) {
+    if (blinkInterval) {
+        blinkScheduler = setInterval(function () {
             chrome.notifications.create('blink', blinkNotification);
             if (playSound) {
                 blinkSound.play();
             }
-        }
-    }, blinkInterval);
+        }, blinkInterval);
+    }
 
-    clearInterval(stretchScheduler);
-    stretchScheduler = setInterval(function() {
-        if (running) {
+    if (stretchInterval) {
+        stretchScheduler = setInterval(function () {
             chrome.notifications.create('stretch', stretchNotification);
             if (playSound) {
                 stretchSound.play();
             }
-        }
-    }, stretchInterval);
+        }, stretchInterval);
+    }
 
-    clearInterval(postureScheduler);
-    postureScheduler = setInterval(function() {
-        if (running) {
+    if (postureInterval) {
+        postureScheduler = setInterval(function () {
             chrome.notifications.create('posture', postureNotification);
             if (playSound) {
                 postureSound.play();
             }
-        }
-    }, postureInterval);
+        }, postureInterval);
+    }
 };
 
 var receiveMessage = function(message, sender, sendResponse) {

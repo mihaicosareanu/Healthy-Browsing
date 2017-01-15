@@ -32,10 +32,10 @@ var resetDefaultSettings = function() {
 	$(stretchSliderId).slider("value", defaultStretchInterval);
 	$(postureSliderId).slider("value", defaultPostureInterval);
 
-	updateBlinkText(defaultBlinkInterval);
-	updateWaterText(defaultWaterInterval);
-	updateStretchText(defaultStretchInterval);
-	updatePostureText(defaultPostureInterval);
+	updateBlinkText(getSliderText(defaultBlinkInterval));
+	updateWaterText(getSliderText(defaultWaterInterval));
+	updateStretchText(getSliderText(defaultStretchInterval));
+	updatePostureText(getSliderText(defaultPostureInterval));
 
 	storeUserPrefs();
 };
@@ -57,11 +57,18 @@ var storeUserPrefs = function() {
 	});
 };
 
-var updateBlinkText = function(value) { $("#blink_value").html(value + ' minutes');};
-var updateWaterText = function(value) { $("#water_value").html(value + ' minutes');};
-var updateStretchText = function(value) { $("#stretch_value").html(value + ' minutes');};
-var updatePostureText = function(value) { $("#posture_value").html(value + ' minutes');};
+var updateBlinkText = function(value) { $("#blink_value").html(value);};
+var updateWaterText = function(value) { $("#water_value").html(value);};
+var updateStretchText = function(value) { $("#stretch_value").html(value);};
+var updatePostureText = function(value) { $("#posture_value").html(value);};
 
+function getSliderText(value) {
+	if (typeof value == undefined)
+		return 'Error';
+	if (value == 0)
+		return 'Disabled';
+	return value + ' minutes';
+}
 
 $(document).ready(function() {
 	chrome.storage.sync.get('healthyBrowsingSettings', function (prefs) {
@@ -80,10 +87,26 @@ $(document).ready(function() {
 			running = defaultRunning;
 			playSound = defaultPlaySound;
 		} else {
-			blinkInterval = prefs.blinkInterval || defaultBlinkInterval;
-			stretchInterval = prefs.stretchInterval || defaultStretchInterval;
-			waterInterval = prefs.waterInterval || defaultWaterInterval;
-			postureInterval = prefs.postureInterval || defaultPostureInterval;
+
+			if (prefs.blinkInterval != null)
+				blinkInterval = prefs.blinkInterval;
+			else
+				blinkInterval = defaultBlinkInterval;
+
+			if (prefs.stretchInterval != null)
+				stretchInterval = prefs.stretchInterval;
+			else
+				stretchInterval = defaultStretchInterval;
+
+			if (prefs.waterInterval != null)
+				waterInterval = prefs.waterInterval;
+			else
+				waterInterval = defaultWaterInterval;
+
+			if (prefs.postureInterval != null)
+				postureInterval = prefs.postureInterval;
+			else
+				postureInterval = defaultPostureInterval;
 
 			if (prefs.running != null) {
 				running = prefs.running;
@@ -100,14 +123,14 @@ $(document).ready(function() {
 			}
 		}
 
-		updateBlinkText(blinkInterval);
-		updateWaterText(waterInterval);
-		updateStretchText(stretchInterval);
-		updatePostureText(postureInterval);
+		updateBlinkText(getSliderText(blinkInterval));
+		updateWaterText(getSliderText(waterInterval));
+		updateStretchText(getSliderText(stretchInterval));
+		updatePostureText(getSliderText(postureInterval));
 
 		var sliderOptions = {
 			step: 5,
-			min: 5,
+			min: 0,
 			max: 120,
 			value: 10
 		};
@@ -116,7 +139,7 @@ $(document).ready(function() {
 		blinkSliderOptions.value = blinkInterval;
 		blinkSliderOptions.change = storeUserPrefs;
 		blinkSliderOptions.slide = function (event, ui) {
-			updateBlinkText(ui.value);
+			updateBlinkText(getSliderText(ui.value));
 		};
 		$(blinkSliderId).slider(blinkSliderOptions);
 
@@ -125,7 +148,7 @@ $(document).ready(function() {
 		waterSliderOptions.value = waterInterval;
 		waterSliderOptions.change = storeUserPrefs;
 		waterSliderOptions.slide = function (event, ui) {
-			updateWaterText(ui.value);
+			updateWaterText(getSliderText(ui.value));
 		};
 		$(waterSliderId).slider(waterSliderOptions);
 
@@ -134,7 +157,7 @@ $(document).ready(function() {
 		stretchSliderOptions.value = stretchInterval;
 		stretchSliderOptions.change = storeUserPrefs;
 		stretchSliderOptions.slide = function (event, ui) {
-			updateStretchText(ui.value);
+			updateStretchText(getSliderText(ui.value));
 		};
 		$(stretchSliderId).slider(stretchSliderOptions);
 
@@ -143,7 +166,7 @@ $(document).ready(function() {
 		postureSliderOptions.value = postureInterval;
 		postureSliderOptions.change = storeUserPrefs;
 		postureSliderOptions.slide = function (event, ui) {
-			updatePostureText(ui.value);
+			updatePostureText(getSliderText(ui.value));
 		};
 		$(postureSliderId).slider(postureSliderOptions);
 
