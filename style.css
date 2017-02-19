@@ -61,3 +61,15 @@ h2.values {
 	position:relative;
 	top:1px;
 }
+
+#bottom-buttons-container {
+	padding: 5px 0px;
+}
+#fb-button {
+	display:inline-block;
+}
+
+#donate-button {
+	padding-left: 10px;
+	display:inline-block;
+}
