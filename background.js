@@ -30,28 +30,28 @@ var waterNotification = {
     type: "basic",
     title: "Take a sip",
     message: "It's time to drink some water.",
-    iconUrl: 'water.png'
+    iconUrl: 'images/water.png'
 };
 
 var blinkNotification = {
     type: "basic",
     title: "Blink your eyes",
     message: "Blink your eyes 10 times, then focus in the distance for a couple of seconds.",
-    iconUrl: 'eye.png'
+    iconUrl: 'images/eye.png'
 };
 
 var stretchNotification = {
     type: "basic",
     title: "Time to stretch",
     message: "Get up and stretch, go to the kitchen or to the bathroom or to the balcony.",
-    iconUrl: 'stretch.png'
+    iconUrl: 'images/stretch.png'
 };
 
 var postureNotification = {
     type: "basic",
     title: "Are you sitting correctly?",
     message: "Push your hips as far back as you can. Keep your shoulders back and your back straight.",
-    iconUrl: 'posture.png'
+    iconUrl: 'images/posture.png'
 };
 
 var refreshScheduler = function() {
