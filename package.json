@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/mihaicosareanu/Healthy-Browsing/issues"
   },
-  "homepage": "https://github.com/mihaicosareanu/Healthy-Browsing#readme"
+  "homepage": "https://github.com/mihaicosareanu/Healthy-Browsing#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1"
+  }
 }
