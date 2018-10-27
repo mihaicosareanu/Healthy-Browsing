@@ -1,0 +1,24 @@
+{
+  "name": "healthy-browsing",
+  "version": "1.0.0",
+  "description": "Healthy Browsing Chrome Extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mihaicosareanu/Healthy-Browsing.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "healthy",
+    "browsing"
+  ],
+  "author": "Mihai Cosareanu",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/mihaicosareanu/Healthy-Browsing/issues"
+  },
+  "homepage": "https://github.com/mihaicosareanu/Healthy-Browsing#readme"
+}
