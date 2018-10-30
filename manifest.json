@@ -12,14 +12,14 @@
 
 	"browser_action": {
 		"default_icon": "images/icon.png",
-		"default_popup": "index.html",
+		"default_popup": "src/index.html",
 		"default_title": "Healthy Browsing"
 	},
 	"permissions": [
 		"notifications", "storage"
 	],
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": ["src/background.js"]
 	}
 
 }
