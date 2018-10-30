@@ -20,7 +20,7 @@ var postureScheduler;
 var running = defaultRunning;
 var playSound = defaultPlaySound;
 
-var defaultSound = new Audio('sound.mp3');
+var defaultSound = new Audio("sounds/default.mp3");
 var waterSound = defaultSound;
 var blinkSound = defaultSound;
 var stretchSound = defaultSound;
