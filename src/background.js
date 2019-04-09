@@ -4,6 +4,7 @@ var defaultStretchValue = 90;
 var defaultPostureValue = 20;
 var defaultRunning = true;
 var defaultPlaySound = false;
+var defaultInteractiveNotification = false;
 
 var multiplier = 60 * 1000;
 
@@ -19,8 +20,9 @@ var postureScheduler;
 
 var running = defaultRunning;
 var playSound = defaultPlaySound;
+var interactiveNotification = defaultInteractiveNotification;
 
-var defaultSound = new Audio("sounds/default.mp3");
+var defaultSound = new Audio(chrome.runtime.getURL("src/sounds/default.mp3"));
 var waterSound = defaultSound;
 var blinkSound = defaultSound;
 var stretchSound = defaultSound;
@@ -30,29 +32,35 @@ var waterNotification = {
     type: "basic",
     title: "Take a sip",
     message: "It's time to drink some water.",
-    iconUrl: 'images/water.png'
+    requireInteraction: interactiveNotification,
+    iconUrl: 'src/images/water.png'
 };
 
 var blinkNotification = {
     type: "basic",
     title: "Blink your eyes",
     message: "Blink your eyes 10 times, then focus in the distance for a couple of seconds.",
-    iconUrl: 'images/eye.png'
+    requireInteraction: interactiveNotification,
+    iconUrl: 'src/images/eye.png'
 };
 
 var stretchNotification = {
     type: "basic",
     title: "Time to stretch",
     message: "Get up and stretch, go to the kitchen or to the bathroom or to the balcony.",
-    iconUrl: 'images/stretch.png'
+    requireInteraction: interactiveNotification,
+    iconUrl: 'src/images/stretch.png'
 };
 
 var postureNotification = {
     type: "basic",
     title: "Are you sitting correctly?",
     message: "Push your hips as far back as you can. Keep your shoulders back and your back straight.",
-    iconUrl: 'images/posture.png'
+    requireInteraction: interactiveNotification,
+    iconUrl: 'src/images/posture.png'
 };
+
+var notifications = [waterNotification, blinkNotification, stretchNotification, postureNotification];
 
 var refreshScheduler = function() {
     chrome.storage.sync.get('healthyBrowsingSettings', function (prefs) {
@@ -89,10 +97,26 @@ var refreshScheduler = function() {
                 playSound = prefs.playSound;
             else
                 playSound = defaultPlaySound;
+
+			if (prefs.interactiveNotification != null) {
+				interactiveNotification = prefs.interactiveNotification;
+			}
+			else {
+				interactiveNotification = defaultInteractiveNotification;
+			}
+
         }
+        refreshNotificationOptions();
         notificationScheduler();
     });
 };
+
+var refreshNotificationOptions = function() {
+
+    notifications.forEach(function(notif){
+        notif.requireInteraction = interactiveNotification;
+    });
+}
 
 var notificationScheduler = function() {
     clearInterval(waterScheduler);

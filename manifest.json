@@ -1,10 +1,10 @@
 {
-	"manifest_version": 4,
+	"manifest_version": 5,
 
 	"name": "Healthy Browsing",
 	"description": "Reminders to drink water, blink, correct your posture and stretch for a healthier browsing.",
 	"version": "0.9",
-	"minimum_chrome_version": "23",
+	"minimum_chrome_version": "50",
 
 	"icons": { "16": "src/images/icon16.png",
 		"48": "src/images/icon48.png",

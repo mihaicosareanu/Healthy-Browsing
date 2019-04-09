@@ -7,6 +7,7 @@ var defaultStretchInterval = 90;
 var defaultPostureInterval = 20;
 var defaultRunning = true;
 var defaultPlaySound = false;
+var defaultInteractiveNotification = false;
 
 /*
 	Slider ids
@@ -21,10 +22,12 @@ var postureSliderId = "#posture_slider";
  */
 var runningToggleButton = "#toggle-running";
 var playSoundToggleButton = "#toggle-sound";
+var interactiveNotificationToggleButton = "#toggle-interactive";
 var toggleButtonSelected = "toggle-button-selected";
 
 var running = defaultRunning;
 var playSound = defaultPlaySound;
+var interactiveNotification = defaultInteractiveNotification;
 
 var resetDefaultSettings = function() {
 	$(blinkSliderId).slider("value", defaultBlinkInterval);
@@ -48,6 +51,7 @@ var getUserPrefs = function() {
 	prefs.postureInterval = $(postureSliderId).slider("value");
 	prefs.running = running;
 	prefs.playSound = playSound;
+    prefs.interactiveNotification = interactiveNotification;
     return prefs;
 };
 
@@ -86,6 +90,7 @@ $(document).ready(function() {
 			postureInterval = defaultPostureInterval;
 			running = defaultRunning;
 			playSound = defaultPlaySound;
+            interactiveNotification = defaultInteractiveNotification;
 		} else {
 
 			if (prefs.blinkInterval != null)
@@ -113,6 +118,13 @@ $(document).ready(function() {
 			}
 			else {
 				running = defaultRunning;
+			}
+
+			if (prefs.interactiveNotification != null) {
+				interactiveNotification = prefs.interactiveNotification;
+			}
+			else {
+				interactiveNotification = defaultInteractiveNotification;
 			}
 
 			if (prefs.playSound != null) {
@@ -177,6 +189,10 @@ $(document).ready(function() {
 		if (playSound) {
 			$(playSoundToggleButton).toggleClass(toggleButtonSelected);
 		}
+
+        if (interactiveNotification) {
+            $(interactiveNotificationToggleButton).toggleClass(toggleButtonSelected);
+        }
 	});
 
 });
@@ -187,6 +203,19 @@ $(document).on('click', runningToggleButton, function() {
 	}
 	else {
 		running = true;
+	}
+
+	storeUserPrefs();
+
+	$(this).toggleClass(toggleButtonSelected);
+});
+
+$(document).on('click', interactiveNotificationToggleButton, function() {
+	if (interactiveNotification) {
+		interactiveNotification = false;
+	}
+	else {
+		interactiveNotification = true;
 	}
 
 	storeUserPrefs();
