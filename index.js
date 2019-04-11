@@ -1,66 +1,24 @@
-/*
-	Default values
- */
-var defaultBlinkInterval = 20;
-var defaultWaterInterval = 45;
-var defaultStretchInterval = 90;
-var defaultPostureInterval = 20;
-var defaultRunning = true;
-var defaultPlaySound = false;
+//================================================================================
+// UI Elements
+//================================================================================
 
-/*
-	Slider ids
- */
 var blinkSliderId = "#blink_slider";
 var waterSliderId = "#water_slider";
 var stretchSliderId = "#stretch_slider";
 var postureSliderId = "#posture_slider";
 
-/*
-	Toggle ids
- */
 var runningToggleButton = "#toggle-running";
 var playSoundToggleButton = "#toggle-sound";
 var toggleButtonSelected = "toggle-button-selected";
 
-var running = defaultRunning;
-var playSound = defaultPlaySound;
+var resetSettingsButton = "#reset-settings";
 
-var resetDefaultSettings = function() {
-	$(blinkSliderId).slider("value", defaultBlinkInterval);
-	$(waterSliderId).slider("value", defaultWaterInterval);
-	$(stretchSliderId).slider("value", defaultStretchInterval);
-	$(postureSliderId).slider("value", defaultPostureInterval);
+var testNotificationsButton = "#test-notifications";
 
-	updateBlinkText(getSliderText(defaultBlinkInterval));
-	updateWaterText(getSliderText(defaultWaterInterval));
-	updateStretchText(getSliderText(defaultStretchInterval));
-	updatePostureText(getSliderText(defaultPostureInterval));
 
-	storeUserPrefs();
-};
-
-var getUserPrefs = function() {
-	var prefs = {};
-    prefs.blinkInterval = $(blinkSliderId).slider("value");
-    prefs.waterInterval = $(waterSliderId).slider("value");
-    prefs.stretchInterval = $(stretchSliderId).slider("value");
-	prefs.postureInterval = $(postureSliderId).slider("value");
-	prefs.running = running;
-	prefs.playSound = playSound;
-    return prefs;
-};
-
-var storeUserPrefs = function() {
-	chrome.storage.sync.set({healthyBrowsingSettings: getUserPrefs()}, function() {
-		chrome.extension.sendMessage({action: "optionsChanged"});
-	});
-};
-
-var updateBlinkText = function(value) { $("#blink_value").html(value);};
-var updateWaterText = function(value) { $("#water_value").html(value);};
-var updateStretchText = function(value) { $("#stretch_value").html(value);};
-var updatePostureText = function(value) { $("#posture_value").html(value);};
+//================================================================================
+// Helper Functions
+//================================================================================
 
 function getSliderText(value) {
 	if (typeof value == undefined)
@@ -70,63 +28,62 @@ function getSliderText(value) {
 	return value + ' minutes';
 }
 
+var updateBlinkText = function(value) { $("#blink_value").html(value);};
+var updateWaterText = function(value) { $("#water_value").html(value);};
+var updateStretchText = function(value) { $("#stretch_value").html(value);};
+var updatePostureText = function(value) { $("#posture_value").html(value);};
+
+var getUserPrefsFromUI = function() {
+	var prefs = {};
+    prefs.blinkValue = $(blinkSliderId).slider("value");
+    prefs.waterValue = $(waterSliderId).slider("value");
+    prefs.stretchValue = $(stretchSliderId).slider("value");
+	prefs.postureValue = $(postureSliderId).slider("value");
+	prefs.running = running;
+	prefs.playSound = playSound;
+    return prefs;
+};
+
+var storeUserPrefs = function() {
+	chrome.storage.sync.set({healthyBrowsingSettings: getUserPrefsFromUI()}, function() {
+		chrome.extension.sendMessage({action: "optionsChanged"});
+	});
+};
+
+
+//================================================================================
+// UI Handlers
+//================================================================================
+
+var resetDefaultSettings = function() {
+	$(blinkSliderId).slider("value", defaultBlinkValue);
+	$(waterSliderId).slider("value", defaultWaterValue);
+	$(stretchSliderId).slider("value", defaultStretchValue);
+	$(postureSliderId).slider("value", defaultPostureValue);
+
+	updateBlinkText(getSliderText(defaultBlinkValue));
+	updateWaterText(getSliderText(defaultWaterValue));
+	updateStretchText(getSliderText(defaultStretchValue));
+	updatePostureText(getSliderText(defaultPostureValue));
+
+	storeUserPrefs();
+};
+
+//================================================================================
+// Execute code and assign handlers
+//================================================================================
+
 $(document).ready(function() {
-	chrome.storage.sync.get('healthyBrowsingSettings', function (prefs) {
-		prefs = prefs.healthyBrowsingSettings;
+	chrome.storage.sync.get('healthyBrowsingSettings', function (storagePrefs) {
+		prefs = buildPrefsFromStorage(storagePrefs);
 
-		var blinkInterval;
-		var stretchInterval;
-		var waterInterval;
-		var postureInterval;
+		running = prefs.running;
+		playSound = prefs.playSound;
 
-		if (prefs == null) {
-			blinkInterval = defaultBlinkInterval;
-			stretchInterval = defaultStretchInterval;
-			waterInterval = defaultWaterInterval;
-			postureInterval = defaultPostureInterval;
-			running = defaultRunning;
-			playSound = defaultPlaySound;
-		} else {
-
-			if (prefs.blinkInterval != null)
-				blinkInterval = prefs.blinkInterval;
-			else
-				blinkInterval = defaultBlinkInterval;
-
-			if (prefs.stretchInterval != null)
-				stretchInterval = prefs.stretchInterval;
-			else
-				stretchInterval = defaultStretchInterval;
-
-			if (prefs.waterInterval != null)
-				waterInterval = prefs.waterInterval;
-			else
-				waterInterval = defaultWaterInterval;
-
-			if (prefs.postureInterval != null)
-				postureInterval = prefs.postureInterval;
-			else
-				postureInterval = defaultPostureInterval;
-
-			if (prefs.running != null) {
-				running = prefs.running;
-			}
-			else {
-				running = defaultRunning;
-			}
-
-			if (prefs.playSound != null) {
-				playSound = prefs.playSound;
-			}
-			else {
-				playSound = defaultPlaySound;
-			}
-		}
-
-		updateBlinkText(getSliderText(blinkInterval));
-		updateWaterText(getSliderText(waterInterval));
-		updateStretchText(getSliderText(stretchInterval));
-		updatePostureText(getSliderText(postureInterval));
+		updateBlinkText(getSliderText(prefs.blinkValue));
+		updateWaterText(getSliderText(prefs.waterValue));
+		updateStretchText(getSliderText(prefs.stretchValue));
+		updatePostureText(getSliderText(prefs.postureValue));
 
 		var sliderOptions = {
 			step: 5,
@@ -136,7 +93,7 @@ $(document).ready(function() {
 		};
 
 		var blinkSliderOptions = sliderOptions;
-		blinkSliderOptions.value = blinkInterval;
+		blinkSliderOptions.value = prefs.blinkValue;
 		blinkSliderOptions.change = storeUserPrefs;
 		blinkSliderOptions.slide = function (event, ui) {
 			updateBlinkText(getSliderText(ui.value));
@@ -145,7 +102,7 @@ $(document).ready(function() {
 
 
 		var waterSliderOptions = sliderOptions;
-		waterSliderOptions.value = waterInterval;
+		waterSliderOptions.value = prefs.waterValue;
 		waterSliderOptions.change = storeUserPrefs;
 		waterSliderOptions.slide = function (event, ui) {
 			updateWaterText(getSliderText(ui.value));
@@ -154,7 +111,7 @@ $(document).ready(function() {
 
 
 		var stretchSliderOptions = sliderOptions;
-		stretchSliderOptions.value = stretchInterval;
+		stretchSliderOptions.value = prefs.stretchValue;
 		stretchSliderOptions.change = storeUserPrefs;
 		stretchSliderOptions.slide = function (event, ui) {
 			updateStretchText(getSliderText(ui.value));
@@ -163,7 +120,7 @@ $(document).ready(function() {
 
 
 		var postureSliderOptions = sliderOptions;
-		postureSliderOptions.value = postureInterval;
+		postureSliderOptions.value = prefs.postureValue;
 		postureSliderOptions.change = storeUserPrefs;
 		postureSliderOptions.slide = function (event, ui) {
 			updatePostureText(getSliderText(ui.value));
@@ -179,34 +136,27 @@ $(document).ready(function() {
 		}
 	});
 
+	// Display the test notifications button if in development mode
+	if (developmentEnvironment) {
+		$(testNotificationsButton).append('<button>test notifications</button>');
+	}
+
 });
 
 $(document).on('click', runningToggleButton, function() {
-	if (running) {
-		running = false;
-	}
-	else {
-		running = true;
-	}
-
+	running = !running;
 	storeUserPrefs();
-
 	$(this).toggleClass(toggleButtonSelected);
 });
 
 $(document).on('click', playSoundToggleButton, function() {
-	if (playSound) {
-		playSound = false;
-	}
-	else {
-		playSound = true;
-	}
-
+	playSound = !playSound;
 	storeUserPrefs();
-
 	$(this).toggleClass(toggleButtonSelected);
 });
 
-$(document).on('click', '#reset-settings', function() {
-	resetDefaultSettings();
+$(document).on('click', resetSettingsButton, resetDefaultSettings);
+
+$(document).on('click', testNotificationsButton, function() {
+	chrome.extension.sendMessage({action: "testNotifications"});
 });
